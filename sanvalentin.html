@@ -1,0 +1,199 @@
+<!Doctype html>
+<html lang = "es">
+    <head>
+        <meta charset= "UTF-8">
+        <title>San Valentin ♥️</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                overflow: hidden;
+            }
+
+            .card {
+                background: white;
+                padding: 30px;
+                border-radius: 20px;
+                text-align: center;
+                width: 320px;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            }
+
+            h1 {
+                color: #ff4d6d;
+            }
+
+            img {
+                width: 200px;
+                height: auto;
+                margin: 15px 0;
+                border-radius: 10px;
+            }
+
+            button {
+                padding: 10px 20px;
+                font-size: 16px;
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+                margin: 10px;
+            }
+
+            #counter {
+                position: fixed;
+                top: 15px;
+                right: 20px;
+                background: white;
+                color: #ff4d6d;
+                padding: 8px 14px;
+                border-radius: 20px;
+                font-weight: bold;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 1000;
+            }
+
+            .yes {
+                background-color: #4CAF50;
+                color: white;
+            }
+
+            .buttons {
+                position: relative;
+                right: 0;
+            }
+
+            .no {
+                background-color: #ff4d6d;
+                color: white;
+                position: fixed;
+            }
+
+            .heart {
+                position: absolute;
+                color: #ff4d6d;
+                font-size: 20px;
+                animation: fall linear infinite;
+            }
+
+            @keyframes fall {
+                from {
+                    transform: translateY(-10vh);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateY(110vh);
+                    opacity: 0;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id = "counter">NO: 0</div>
+
+        <!-- 🎵 Música de fondo -->
+        <audio id="music" loop>
+            <source src="Musica/start.mp3" type="audio/mpeg">
+            Tu navegador no soporta audio.
+        </audio>
+
+        <div class = "card">
+            <h1 id="message">Quieres ser mi San Valentin? 💘</h1>
+            <img id = "img" src = "fotos_san_valentin/foto1.jpg">
+            <div class="buttons">
+                <button class = "yes" onclick="yes()">Si ♥️</button>
+                <button class="no" id="noBtn" onclick="no()">No 🤬</button>
+            </div>
+        </div>
+        <script>
+            let noCount = 0
+
+            function startMusic() {
+                const music = document.getElementById("music");
+                if (music.paused) {
+                    music.play().catch(() => {});
+                }
+            }
+
+            let index = 0
+            const message = [
+                "Segura que no? 😟",
+                "Mi vida andaleeee 😫",
+                "Andalee se mi San Valentiin!!! 😖",
+                "Mi amor hermosa ANDALEEEEEEE 👉👈",
+                "Te juro que te compro el peluche de kokichi!! ☺️"
+            ];
+
+            const images = [
+                "fotos_san_valentin/foto2.jpg",
+                "fotos_san_valentin/foto6.jpg",
+                "fotos_san_valentin/foto3.jpg",
+                "fotos_san_valentin/foto4.jpg",
+                "fotos_san_valentin/foto5.jpg"
+            ];
+
+            function no() {
+                startMusic();
+                noCount++;
+                document.getElementById("counter").innerText = "NO: " + noCount;
+
+                index = (index + 1) % message.length;
+                document.getElementById("message").innerText = message[index];
+                document.getElementById("img").src = images[index];
+
+                const btn = document.getElementById("noBtn");
+
+                const padding = 20;
+                const btnWidth = btn.offsetWidth;
+                const btnHeight = btn.offsetHeight;
+
+                const maxX = window.innerWidth - btnWidth - padding;
+                const maxY = window.innerHeight - btnHeight - padding;
+
+                const x = Math.random() * maxX;
+                const y = Math.random() * maxY;
+
+                btn.style.left = x + "px";
+                btn.style.top = y + "px";
+            }
+
+            function yes() {
+                startMusic();
+                const music = document.getElementById("music");
+                music.pause();
+                music.src = "Musica/final.mp3";
+                music.play();
+                
+                document.body.innerHTML = `
+                    <div class="card">
+                        <h1>AHUEVOOO MI VIDA HERMOSAAAA TE AMOOO💕</h1>
+                        <img src="fotos_san_valentin/gif.gif">
+                        <p>Te amo ❤️ Feliz San Valentín</p>
+                    </div>
+                `;
+                startHearts();
+            }
+
+            function startHearts() {
+                setInterval(() => {
+                    const heart = document.createElement("div");
+                    heart.className = "heart";
+                    heart.innerHTML = "♥";
+                    heart.style.left = Math.random() * window.innerWidth + "px";
+                    heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+                    document.body.appendChild(heart);
+
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 6000);
+                }, 300);
+            }   
+        </script>
+
+    </body>
+
+</html>
